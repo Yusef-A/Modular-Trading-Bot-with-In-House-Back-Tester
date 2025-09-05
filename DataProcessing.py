@@ -18,7 +18,7 @@ class data_manager:
         '''
         Downloads and stores requested data. Returns location of requested data.
         '''
-        filepath = os.path.join('Store' , f'{ticker}_{self.start}_{self.end}.parquet')
+        filepath = os.path.join('Store' , f'{ticker}.parquet')
         if not os.path.exists(filepath):
             print('...Filepath nonexistant. Storing now...')
             data = yf.download(ticker=ticker, start=self.start, end=self.end, interval=self.candle_freq)
@@ -44,7 +44,7 @@ class data_manager:
         else:
             raise ValueError('File nonexistant')
     
-    def create_table(self, position_data:dict):
+    def create_empty_table(self, position_data:dict):
         '''
         Adds a table to positions.db
         '''

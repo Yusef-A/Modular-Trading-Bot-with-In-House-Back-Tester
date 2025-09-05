@@ -35,7 +35,6 @@ class bot:
             return 'FLAT'
         
 
-
     def calc_position_size(self , ticker):
         '''
         calculates the position size
@@ -89,8 +88,6 @@ class bot:
         returns the information of a stored position in the portfolio
         '''
         return self.portfolio.positions[ticker_name]
-
-
 
 
 

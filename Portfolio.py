@@ -54,7 +54,7 @@ class Portfolio:
         }
         self.update_stock_price(ticker_name)
         self.processor.cursor.execute(f'INSERT INTO Positions (ticker, signal, quantity, starting_price, current_price, stop_loss) VALUES (?, ?, ?, ?, ?, ?)', 
-                                      (ticker_name, signal, n_stocks, p_entry, self.tester.get_current_price(ticker_name), stop_loss, ))
+                                      (ticker_name, signal, n_stocks, p_entry, self.tester.get_current_price(ticker_name), stop_loss))
 
     def update_n_stocks(self, name, n_stocks):
         '''
@@ -67,6 +67,7 @@ class Portfolio:
         for position in self.positions:
             delta += self.positions[position]['current_price'] - self.positions[position]['starting_price']
         self.equity = self.balance + delta
+
     def get_positions(self):
         return copy.deepcopy(self.positions)
     def get_equity(self):

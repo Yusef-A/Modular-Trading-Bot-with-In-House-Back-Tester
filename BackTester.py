@@ -1,5 +1,6 @@
 from DataProcessing import data_manager
 from Portfolio import Portfolio
+import statistics
 import numpy as np
 from Bot import bot
 import pandas as pd
@@ -11,7 +12,7 @@ class back_tester():
         self.portfolio = portfolio
         self.bot = bot
         self.statistics = {}
-        self.analyzed_window = {} #a dictionary that holds each ticker as well as the coreesponding window of candles analyzed for that ticker. {ticker : [candle1, candle2, ...]}
+        self.analyzed_window = {} # a dictionary that holds each ticker as well as the coreesponding window of candles analyzed for that ticker. {ticker : [candle1, candle2, ...]}
         self.volatility = 0
         self.candles = None
         self.tickers_list = tickers_list
@@ -27,7 +28,7 @@ class back_tester():
             values[ticker] = candles #retrieves the parquet file of a ticker, converts it to a df, stores df address in a dictonary
         self.candles = values #stores dict of values in candles
 
-    def simulate_trades(self):
+    def simulate_trades(self): #update so that UI is also updated per iteration or every few iterations
         '''
         Simulates trades across all tickers
         '''
@@ -61,7 +62,10 @@ class back_tester():
     def determine_risk(self):
         pass
 
-    def get_deviation(self)
+    def get_deviation(self, ticker):
+        return statistics.stdev(self.analyzed_window[ticker])
+
+
     def determine_leverage(self):
         pass
 
