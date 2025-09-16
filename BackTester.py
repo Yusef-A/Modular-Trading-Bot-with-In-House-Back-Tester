@@ -7,7 +7,7 @@ import pandas as pd
 
 class back_tester():
 
-    def _init_(self , tickers_list:list, processor:data_manager, portfolio:Portfolio, bot:bot):
+    def __init__(self , tickers_list:list, processor:data_manager, portfolio:Portfolio, bot:bot):
         self.processor = processor
         self.portfolio = portfolio
         self.bot = bot
@@ -60,17 +60,36 @@ class back_tester():
             }
 
     def determine_risk(self):
-        pass
+        equity = self.portfolio.get_equity()
+        if equity == 0:
+            return 0
+        risk_exposure = 0
+        for pos in self.portfolio.get_positions().values():
+            risk_per_share = abs(pos['starting_price'] - pos.get('stop_loss', pos['starting_price']))
+            risk_exposure += risk_per_share * abs(pos['quantity'])
+        return risk_exposure / equity
 
     def get_deviation(self, ticker):
-        return statistics.stdev(self.analyzed_window[ticker])
-
-
+        window = self.analyzed_window.get(ticker, [])
+        if len(window) < 2:
+            return 0.0
+        return statistics.stdev(window)
     def determine_leverage(self):
-        pass
+        equity = self.portfolio.get_equity()
+        if equity == 0:
+            return 0
+        exposure = 0
+        for pos in self.portfolio.get_positions().values():
+            exposure += abs(pos['current_price']) * abs(pos['quantity'])
+        return exposure / equity
 
     def calculate_p_and_l(self, realize=False):
-        pass
+        pnl = {}
+        for ticker, pos in self.portfolio.get_positions().items():
+            pnl[ticker] = (pos['current_price'] - pos['starting_price']) * pos['quantity']
+        if realize:
+            return sum(pnl.values())
+        return pnl
 
 
 

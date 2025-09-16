@@ -16,7 +16,7 @@ class Momentum:
         fast_sma = closes.rolling(self.fast_window, min_periods=self.fast_window).mean()
         slow_sma = closes.rolling(self.slow_window, min_periods=self.slow_window).mean()
 
-        # core logic: compare fast vs slow
+        #compares fast vs slow
         signals = np.where(fast_sma > slow_sma, 1,
                   np.where(fast_sma < slow_sma, -1, 0))
 

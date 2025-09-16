@@ -20,7 +20,7 @@ class Breakout:
         support    = lows.shift(1).rolling(self.lookback, min_periods=self.lookback).min()
 
         signals = np.where(closes > resistance, 1,
-                  np.where(closes < support,   -1, 0))
+                  np.where(closes < support,  -1, 0))
         return pd.Series(signals, index=ohlc.index, dtype="int64")
 
     def get_signal(self, ohlc: pd.DataFrame) -> int:
